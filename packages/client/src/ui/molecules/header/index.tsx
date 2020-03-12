@@ -1,8 +1,9 @@
 import React from 'react'
-import { Typography } from 'antd'
+import cn from 'classnames'
 import { FormattedMessage } from 'react-intl'
-import { Container } from '../../atoms/container'
 import { SergeiService } from '@app/services/sergei'
+import { Container } from '../../atoms/container'
+import classes from './style.module.less'
 
 interface IProps {
   className?: string
@@ -10,14 +11,14 @@ interface IProps {
 
 export const Header: React.FC<IProps> = ({ className }) => {
   return (
-    <div className={className}>
-      <Container>
-        <Typography.Title level={4}>
+    <div className={cn(className, classes.wrapper)}>
+      <Container className={classes.wrapperContainer}>
+        <h1 className={classes.title}>
           <FormattedMessage
             id='blogArticles.title'
             values={{ nickname: SergeiService.nickname }}
           />
-        </Typography.Title>
+        </h1>
 
         this is a header!
       </Container>
