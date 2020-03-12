@@ -3706,7 +3706,7 @@ core-js@^2.4.0:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.11.tgz#38831469f9922bded8ee21c9dc46985e0399308c"
   integrity sha512-5wjnpaT/3dV+XB4borEsnAYQchn00XSgTAWKDkEqv+K8KevjbzmofK6hfJ9TZIlpj2N0xQpazy7PiRQiWHqzWg==
 
-core-js@^3.5.0:
+core-js@^3.5.0, core-js@^3.6.1:
   version "3.6.4"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.6.4.tgz#440a83536b458114b9cb2ac1580ba377dc470647"
   integrity sha512-4paDGScNgZP2IXXilaffL9X7968RuvwlkK3xWtZRVqgd8SYNiVKRJvkFd1aqqEuPfN7E68ZHEp9hDj6lHj4Hyw==
@@ -5517,6 +5517,11 @@ gensync@^1.0.0-beta.1:
   version "1.0.0-beta.1"
   resolved "https://registry.yarnpkg.com/gensync/-/gensync-1.0.0-beta.1.tgz#58f4361ff987e5ff6e1e7a210827aa371eaac269"
   integrity sha512-r8EC6NO1sngH/zdD9fiRDLdcgnbayXah+mLgManTaIZJqEC1MZstmnox8KpnI2/fxQwrp5OpCOYWLp4rBl4Jcg==
+
+get-browser-language@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/get-browser-language/-/get-browser-language-1.0.0.tgz#3623aedbd62573299e1e78ae2527b94f386a4ffc"
+  integrity sha1-NiOu29YlcymeHniuJSe5TzhqT/w=
 
 get-caller-file@^1.0.1:
   version "1.0.3"
@@ -11909,6 +11914,13 @@ type@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/type/-/type-2.0.0.tgz#5f16ff6ef2eb44f260494dae271033b29c09a9c3"
   integrity sha512-KBt58xCHry4Cejnc2ISQAF7QY+ORngsWfxezO68+12hKV6lQY8P/psIkcbjeHWn7MqcgciWJyCCevFMJdIXpow==
+
+typed-contracts@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/typed-contracts/-/typed-contracts-2.2.2.tgz#8046160e1b42cc0e884869af8a737d8d9379834b"
+  integrity sha512-yTL1ucSgHl9x+5xW3YSd856eU9p6FxmnsF7hSUGvvyvXEnQtvQV6YNQ2FvUkwRbUTKq5hncOLf159uNCnZY4sA==
+  dependencies:
+    core-js "^3.6.1"
 
 typedarray@^0.0.6:
   version "0.0.6"

@@ -1,5 +1,5 @@
-import * as translates from './translates'
+import * as intl from './intl'
 
 export {
-  translates
+  intl
 }
