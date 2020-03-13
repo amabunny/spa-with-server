@@ -1,7 +1,7 @@
 import React from 'react'
 import cn from 'classnames'
 import { FormattedMessage } from 'react-intl'
-import { SergeiService } from '@app/services/sergei'
+import { SergeiService } from '@app/services/models/sergei'
 import { Container } from '../../atoms/container'
 import classes from './style.module.less'
 
