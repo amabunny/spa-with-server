@@ -1,9 +1,7 @@
 {
   "name": "spa-with-node",
   "private": true,
-  "dependencies": {
-
-  },
+  "dependencies": {},
   "workspaces": [
     "packages/*"
   ]
