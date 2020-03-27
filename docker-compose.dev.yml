@@ -2,11 +2,6 @@ version: "3"
 
 volumes:
   dbdata:
-  client:
-  server:
-  common_node_modules:
-  server_node_modules:
-  client_node_modules:
 
 services:
   db:
@@ -21,31 +16,3 @@ services:
       POSTGRES_PASSWORD: 1234
       POSTGRES_USER: postgres
       POSTGRES_DB: blog
-
-  server:
-    depends_on:
-      - db
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-    command: yarn --cwd ./packages/server start:dev
-    ports:
-      - 3001:3001
-    volumes:
-      - ./:/opt/webapp
-      - server_node_modules:/opt/webapp/packages/server/node_modules
-      - common_node_modules:/opt/webapp/node_modules
-
-  client:
-    depends_on:
-      - server
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-    command: yarn --cwd ./packages/client start
-    ports:
-      - 3000:3000
-    volumes:
-      - ./:/opt/webapp
-      - client_node_modules:/opt/webapp/packages/client/node_modules
-      - common_node_modules:/opt/webapp/node_modules

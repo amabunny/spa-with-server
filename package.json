@@ -1,7 +1,14 @@
 {
   "name": "spa-with-node",
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "concurrently": "^5.1.0"
+  },
+  "scripts": {
+    "dev": "concurrently --kill-others 'yarn dev-client' 'yarn dev-server'",
+    "dev-server": "yarn --cwd ./packages/server start:dev",
+    "dev-client": "yarn --cwd ./packages/client start"
+  },
   "workspaces": [
     "packages/*"
   ]
