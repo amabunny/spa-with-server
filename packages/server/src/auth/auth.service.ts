@@ -25,7 +25,7 @@ export class AuthService {
     throw new Error('Not valid user.')
   }
 
-  public async createUser (user: Omit<User, 'id' | 'hashUserPassword'>) {
+  public async createUser (user: Omit<User, 'id'>) {
     const newUser = Object.assign(new User(), user)
     return this.usersRepository.save(newUser)
   }
