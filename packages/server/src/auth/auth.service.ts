@@ -16,4 +16,14 @@ export class AuthService {
   public findUser (id: string) {
     return this.usersRepository.findOneOrFail(id)
   }
+
+  public async validateUser (username: string, password: string) {
+    const user = await this.usersRepository.findOne(username)
+
+    if (user && user.password === password) {
+      return user
+    }
+
+    return null
+  }
 }

@@ -12,8 +12,11 @@ export class User {
   lastName: string
 
   @Column()
-  nickname: string
+  username: string
 
   @Column()
   tgContact: string
+
+  @Column()
+  password: string
 }
