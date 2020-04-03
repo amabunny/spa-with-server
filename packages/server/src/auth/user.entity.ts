@@ -1,7 +1,17 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert } from 'typeorm'
+import * as bcrypt from 'bcrypt'
 
 @Entity()
 export class User {
+  static hashPassword (password: string) {
+    const saltEdges = 10
+    return bcrypt.hashSync(password, saltEdges)
+  }
+
+  static comparePasswords (password: string, encrypted: string) {
+    return bcrypt.compareSync(password, encrypted)
+  }
+
   @PrimaryGeneratedColumn()
   id: string
 
@@ -11,12 +21,17 @@ export class User {
   @Column()
   lastName: string
 
-  @Column()
+  @Column({ unique: true })
   username: string
 
-  @Column({ nullable: true, default: null })
+  @Column({ nullable: true })
   tgContact?: string
 
   @Column()
   password: string
+
+  @BeforeInsert()
+  hashUserPassword () {
+    this.password = User.hashPassword(this.password)
+  }
 }

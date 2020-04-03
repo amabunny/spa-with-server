@@ -5,9 +5,7 @@ import { User } from './user.entity'
 
 @Injectable()
 export class AuthService {
-  constructor (@InjectRepository(User) private readonly usersRepository: Repository<User>) {
-
-  }
+  constructor (@InjectRepository(User) private readonly usersRepository: Repository<User>) {}
 
   public findAll () {
     return this.usersRepository.find()
@@ -18,16 +16,27 @@ export class AuthService {
   }
 
   public async validateUser (username: string, password: string) {
-    const user = await this.usersRepository.findOne(username)
+    const user = await this.usersRepository.findOne({ username })
 
-    if (user && user.password === password) {
+    if (user && User.comparePasswords(password, user.password)) {
       return user
     }
 
-    return null
+    throw new Error('Not valid user.')
   }
 
-  public createUser (user: Omit<User, 'id'>) {
-    this.usersRepository.create(user)
+  public async createUser (user: Omit<User, 'id' | 'hashUserPassword'>) {
+    const newUser = Object.assign(new User(), user)
+    return this.usersRepository.save(newUser)
+  }
+
+  public async deleteUser (id: string) {
+    const user = await this.usersRepository.findOne({ id })
+
+    if (user) {
+      return this.usersRepository.remove(user)
+    }
+
+    throw new Error('Cannot delete user. Not found in repository.')
   }
 }
