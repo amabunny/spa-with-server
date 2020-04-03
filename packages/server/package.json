@@ -29,6 +29,7 @@
     "@nestjs/platform-express": "^6.10.14",
     "@nestjs/typeorm": "^7.0.0",
     "@spa-with-node/types": "^0.0.1",
+    "bcrypt": "^4.0.1",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "pg": "^7.18.2",

@@ -1,5 +1,6 @@
-import { Controller, Get } from '@nestjs/common'
+import { Controller, Get, Body } from '@nestjs/common'
 import { AuthService } from './auth.service'
+import { NewUserDTO } from './dto/new-user'
 
 @Controller('auth')
 export class AuthController {
@@ -15,5 +16,10 @@ export class AuthController {
   @Get('user')
   getUser () {
     return process.env
+  }
+
+  @Get('regiser')
+  async register (@Body() newUserDto: NewUserDTO) {
+    this.authService.createUser(newUserDto)
   }
 }

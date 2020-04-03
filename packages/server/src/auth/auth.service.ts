@@ -26,4 +26,8 @@ export class AuthService {
 
     return null
   }
+
+  public createUser (user: Omit<User, 'id'>) {
+    this.usersRepository.create(user)
+  }
 }
