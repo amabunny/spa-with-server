@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
 
-export class UserNullablePassword1585928172140 implements MigrationInterface {
-    name = 'UserNullablePassword1585928172140'
+export class UserNullableTgcontact1585928918975 implements MigrationInterface {
+    name = 'UserNullableTgcontact1585928918975'
 
     public async up (queryRunner: QueryRunner): Promise<void> {
       await queryRunner.query('ALTER TABLE "user" ALTER COLUMN "tgContact" DROP NOT NULL', undefined)
