@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { AppController } from './app.controller'
-import { AuthController } from '@app/controllers/auth/auth.controller'
 import { createTypeOrmOptions } from '@app/config/typeorm'
-import { Article } from '@app/entities/article'
+import { ArticlesModule } from '@app/articles/articles.module'
+import { AuthModule } from '@app/auth/auth.module'
+import { AppController } from './app.controller'
 import { AppService } from './app.service'
 
 @Module({
@@ -12,15 +12,12 @@ import { AppService } from './app.service'
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       ...createTypeOrmOptions(),
-      entities: [
-        Article
-      ]
-    })
+      autoLoadEntities: true
+    }),
+    ArticlesModule,
+    AuthModule
   ],
-  controllers: [
-    AppController,
-    AuthController
-  ],
+  controllers: [AppController],
   providers: [AppService]
 })
 export class AppModule {}
