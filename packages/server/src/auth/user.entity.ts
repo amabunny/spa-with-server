@@ -14,8 +14,8 @@ export class User {
   @Column()
   username: string
 
-  @Column()
-  tgContact: string
+  @Column({ nullable: true, default: null })
+  tgContact?: string
 
   @Column()
   password: string
