@@ -31,7 +31,7 @@ export class User {
   password: string
 
   @BeforeInsert()
-  private hashUserPassword () {
+  hashUserPassword () {
     this.password = User.hashPassword(this.password)
   }
 }
