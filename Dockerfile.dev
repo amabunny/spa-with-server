@@ -1,7 +1,0 @@
-FROM node:12-alpine
-
-WORKDIR /opt/webapp
-
-COPY . .
-
-RUN yarn

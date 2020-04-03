@@ -4,9 +4,6 @@ import { Controller, Get } from '@nestjs/common'
 export class AuthController {
   @Get('user')
   getUser () {
-    return {
-      status: 'success',
-      message: 'This method will be implemented later'
-    }
+    return process.env
   }
 }

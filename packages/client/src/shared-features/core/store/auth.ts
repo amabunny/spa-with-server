@@ -1,5 +1,5 @@
 import { createStore } from 'effector'
-import { getUser } from './auth.effects'
+import { getUser, login, logout } from './auth.effects'
 
 const $user = createStore<any>(null)
 
