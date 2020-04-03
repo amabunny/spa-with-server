@@ -10,6 +10,7 @@ export const createTypeOrmOptions = (): PostgresConnectionOptions => {
     database: process.env.TYPEORM_DATABASE,
     synchronize: !!Number(process.env.TYPEORM_SYNCHRONIZE),
     logging: !!process.env.TYPEORM_LOGGING,
-    migrationsRun: !!Number(process.env.TYPEORM_RUN_MIGRATIONS)
+    migrationsRun: !!Number(process.env.TYPEORM_RUN_MIGRATIONS),
+    entities: process.env.TYPEORM_ENTITIES.split(',').map(path => path.trim())
   }
 }

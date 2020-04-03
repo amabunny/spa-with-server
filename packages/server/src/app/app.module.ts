@@ -10,10 +10,7 @@ import { AppService } from './app.service'
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypeOrmModule.forRoot({
-      ...createTypeOrmOptions(),
-      autoLoadEntities: true
-    }),
+    TypeOrmModule.forRoot(createTypeOrmOptions()),
     ArticlesModule,
     AuthModule
   ],
