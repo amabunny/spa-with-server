@@ -1,0 +1,22 @@
+@import "~@app/styles/default.less";
+
+.wrapper {
+  display: grid;
+  grid-auto-flow: row;
+  grid-template-columns: 1fr 2fr;
+  grid-gap: @indent;
+  align-items: center;
+
+  > label {
+    grid-column: ~"1";
+  }
+
+  > div {
+    grid-column: ~"2";
+  }
+
+  > div:last-child {
+    grid-column: ~"span 2";
+    text-align: center;
+  }
+}

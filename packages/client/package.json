@@ -70,8 +70,7 @@
       "react/jsx-sort-props": [
         1
       ],
-      "no-undef-init": "off",
-      "indent": "off"
+      "no-undef-init": "off"
     }
   },
   "browserslist": {

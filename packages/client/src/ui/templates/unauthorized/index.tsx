@@ -1,9 +1,23 @@
 import React from 'react'
+import classes from './style.module.less'
 
-export const UnauthorizedTemplate: React.FC = ({ children }) => {
+interface IProps {
+  title?: React.ReactNode
+}
+
+export const UnauthorizedTemplate: React.FC<IProps> = ({
+  children,
+  title = 'Unauthorized'
+}) => {
   return (
-    <div>
-      {children}
+    <div className={classes.wrapper}>
+      <div className={classes.container}>
+        <h1 className={classes.title}>
+          {title}
+        </h1>
+
+        {children}
+      </div>
     </div>
   )
 }

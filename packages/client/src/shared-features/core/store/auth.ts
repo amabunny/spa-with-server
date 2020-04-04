@@ -7,5 +7,7 @@ $user.on(getUser.done, (_, { result }) => result)
 
 export {
   getUser,
-  $user
+  $user,
+  login,
+  logout
 }

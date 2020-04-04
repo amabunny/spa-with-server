@@ -1,3 +1,15 @@
 {
+	"auth.login": "Sign-in",
+	"auth.loginForm.password": "Password",
+	"auth.loginForm.submit": "Sign-in",
+	"auth.loginForm.username": "User name",
+	"auth.register": "Sign-up",
+	"auth.registerForm.confirmPassword": "Confirm password",
+	"auth.registerForm.firstName": "First  name",
+	"auth.registerForm.lastName": "Last name",
+	"auth.registerForm.password": "Password",
+	"auth.registerForm.submit": "Register now",
+	"auth.registerForm.tgContact": "Telegram profile link",
+	"auth.registerForm.username": "User name",
 	"blogArticles.title": "{nickname} blog"
 }
