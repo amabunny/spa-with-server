@@ -1,42 +1,33 @@
 import { Injectable } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
-import { User } from './user.entity'
+import { JwtService } from '@nestjs/jwt'
+import { UsersService } from '@app/users/users.service'
+import { User } from '@app/users/user.entity'
+import omit from 'lodash/omit'
+import { Crypt } from './crypt'
 
 @Injectable()
 export class AuthService {
-  constructor (@InjectRepository(User) private readonly usersRepository: Repository<User>) {}
-
-  public findAll () {
-    return this.usersRepository.find()
-  }
-
-  public findUser (id: string) {
-    return this.usersRepository.findOneOrFail(id)
-  }
+  constructor (
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService
+  ) {}
 
   public async validateUser (username: string, password: string) {
-    const user = await this.usersRepository.findOne({ username })
+    const user = await this.usersService.usersRepository.findOne({ username })
 
-    if (user && User.comparePasswords(password, user.password)) {
-      return user
+    if (user && Crypt.comparePasswords(password, user.password)) {
+      return omit(user, ['password'])
     }
 
-    throw new Error('Not valid user.')
+    return null
   }
 
-  public async createUser (user: Omit<User, 'id' | 'hashUserPassword'>) {
-    const newUser = Object.assign(new User(), user)
-    return this.usersRepository.save(newUser)
-  }
-
-  public async deleteUser (id: string) {
-    const user = await this.usersRepository.findOne({ id })
-
-    if (user) {
-      return this.usersRepository.remove(user)
+  public async login (user: User) {
+    return {
+      accessToken: this.jwtService.sign({
+        username: user.username,
+        sub: user.id
+      })
     }
-
-    throw new Error('Cannot delete user. Not found in repository.')
   }
 }

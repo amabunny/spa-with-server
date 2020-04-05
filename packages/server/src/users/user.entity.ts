@@ -1,17 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert } from 'typeorm'
-import * as bcrypt from 'bcrypt'
+import { Crypt } from '@app/auth/crypt'
 
 @Entity()
 export class User {
-  static hashPassword (password: string) {
-    const saltEdges = 10
-    return bcrypt.hashSync(password, saltEdges)
-  }
-
-  static comparePasswords (password: string, encrypted: string) {
-    return bcrypt.compareSync(password, encrypted)
-  }
-
   @PrimaryGeneratedColumn()
   id: string
 
@@ -31,7 +22,7 @@ export class User {
   password: string
 
   @BeforeInsert()
-  hashUserPassword () {
-    this.password = User.hashPassword(this.password)
+  private hashUserPassword () {
+    this.password = Crypt.hashPassword(this.password)
   }
 }

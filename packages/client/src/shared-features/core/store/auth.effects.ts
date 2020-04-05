@@ -1,8 +1,8 @@
 import { createEffect } from 'effector'
-import { AuthModelService } from '@app/services/models/auth'
+import { AuthService } from '@app/services/auth'
 
 export const getUser = createEffect({
-  handler: AuthModelService.getUser
+  handler: AuthService.getUser
 })
 
 export const login = createEffect({

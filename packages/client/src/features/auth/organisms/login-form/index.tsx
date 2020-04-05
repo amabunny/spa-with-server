@@ -1,10 +1,36 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState, useCallback } from 'react'
 import { FormattedMessage } from 'react-intl'
-import { Form, Input, Button } from 'antd'
+import { Form, Input, Button, Spin } from 'antd'
 import { ColProps } from 'antd/lib/grid/col'
+import { AuthService } from '@app/services/auth'
 import classes from './style.module.less'
 
 export const LoginForm = () => {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [isAuthorizing, setIsAuthorizing] = useState(false)
+
+  const onUsernameChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(e.target.value)
+  }, [])
+
+  const onPasswordChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value)
+  }, [])
+
+  const onSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setIsAuthorizing(true)
+
+    try {
+      await AuthService.login(username, password)
+    } catch {
+      alert('Error till login')
+    } finally {
+      setIsAuthorizing(false)
+    }
+  }, [username, password])
+
   const labelLayout = useMemo<ColProps>(() => ({
     xs: { span: 24 },
     sm: { span: 8 }
@@ -16,32 +42,44 @@ export const LoginForm = () => {
   }), [])
 
   return (
-    <Form
-      labelCol={labelLayout}
-      wrapperCol={wrapperLayout}
-    >
-      <Form.Item
-        label={<FormattedMessage id='auth.loginForm.username' />}
-        required
+    <Spin spinning={isAuthorizing}>
+      <Form
+        labelCol={labelLayout}
+        onSubmitCapture={onSubmit}
+        wrapperCol={wrapperLayout}
       >
-        <Input />
-      </Form.Item>
-
-      <Form.Item
-        label={<FormattedMessage id='auth.loginForm.password' />}
-        required
-      >
-        <Input type='password' />
-      </Form.Item>
-
-      <div className={classes.buttonFormItem}>
-        <Button
-          htmlType='submit'
-          type='primary'
+        <Form.Item
+          label={<FormattedMessage id='auth.loginForm.username' />}
+          required
         >
-          <FormattedMessage id='auth.loginForm.submit' />
-        </Button>
-      </div>
-    </Form>
+          <Input
+            name='name'
+            onChange={onUsernameChange}
+            value={username}
+          />
+        </Form.Item>
+
+        <Form.Item
+          label={<FormattedMessage id='auth.loginForm.password' />}
+          required
+        >
+          <Input
+            name='password'
+            onChange={onPasswordChange}
+            type='password'
+            value={password}
+          />
+        </Form.Item>
+
+        <div className={classes.buttonFormItem}>
+          <Button
+            htmlType='submit'
+            type='primary'
+          >
+            <FormattedMessage id='auth.loginForm.submit' />
+          </Button>
+        </div>
+      </Form>
+    </Spin>
   )
 }
