@@ -1,17 +1,21 @@
 import { hostApi } from '@app/api/host'
 
-export class AuthService {
-  static async getUser () {
+export const AuthService = {
+  async getUser () {
     const { data } = await hostApi.get('auth/user')
     return data
-  }
+  },
 
-  static async login (username: string, password: string) {
-    const { data } = await hostApi.post('auth/login', {
+  async login ({ password, username }: { username: string, password: string }) {
+    const { data } = await hostApi.post<{ accessToken: string }>('auth/login', {
       username,
       password
     })
 
     return data
+  },
+
+  async logout () {
+
   }
 }

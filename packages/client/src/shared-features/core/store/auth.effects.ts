@@ -6,13 +6,9 @@ export const getUser = createEffect({
 })
 
 export const login = createEffect({
-  handler: () => {
-
-  }
+  handler: AuthService.login
 })
 
 export const logout = createEffect({
-  handler: () => {
-
-  }
+  handler: AuthService.logout
 })

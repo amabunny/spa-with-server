@@ -1,5 +1,5 @@
 import { forward, createStore } from 'effector'
-import { loadDataFactory } from '@app/utils/factory/load-data'
+import { loadDataFactory } from '@app/lib/factory/load-data'
 import { IntlService, AvailableLocales } from '@app/services/intl'
 import { changeLocale } from './intl.events'
 

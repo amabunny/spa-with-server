@@ -1,3 +1,3 @@
-export class SergeiService {
-  static nickname = '@mabunny'
+export const SergeiService = {
+  nickname: '@mabunny'
 }

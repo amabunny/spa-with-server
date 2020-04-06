@@ -1,4 +1,5 @@
-import { Controller, Get, Post, BadRequestException, Param } from '@nestjs/common'
+import { Controller, Get, Post, BadRequestException, Param, UseGuards, Request } from '@nestjs/common'
+import { JwtAuthGuard } from '@app/auth/jwt-auth.guard'
 import { UsersService } from './users.service'
 
 @Controller('users')
@@ -12,9 +13,10 @@ export class UsersController {
     return this.usersService.usersRepository.find()
   }
 
-  @Get('user')
-  getUser () {
-    return process.env
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  getUser (@Request() req) {
+    return req.user
   }
 
   @Post('delete/:id')

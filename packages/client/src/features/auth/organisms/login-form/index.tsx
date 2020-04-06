@@ -2,7 +2,7 @@ import React, { useMemo, useState, useCallback } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Form, Input, Button, Spin } from 'antd'
 import { ColProps } from 'antd/lib/grid/col'
-import { AuthService } from '@app/services/auth'
+import { Auth } from '@app/shared-features/core'
 import classes from './style.module.less'
 
 export const LoginForm = () => {
@@ -23,7 +23,7 @@ export const LoginForm = () => {
     setIsAuthorizing(true)
 
     try {
-      await AuthService.login(username, password)
+      await Auth.login({ username, password })
     } catch {
       alert('Error till login')
     } finally {

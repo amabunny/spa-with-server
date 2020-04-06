@@ -1,5 +1,5 @@
-export class EnvService {
-  static __getEnvVarOrThrowAnException (envVariableName: string) {
+export const EnvService = {
+  __getEnvVarOrThrowAnException (envVariableName: string) {
     const value = process.env[`REACT_APP_${envVariableName}`]
 
     if (value) {
@@ -7,9 +7,9 @@ export class EnvService {
     }
 
     throw new Error(`"${value}" is not defined in environment variables.`)
-  }
+  },
 
-  static getHostUrl () {
+  getHostUrl () {
     return EnvService.__getEnvVarOrThrowAnException('HOST_URL')
   }
 }

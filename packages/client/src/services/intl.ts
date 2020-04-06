@@ -7,16 +7,14 @@ export enum AvailableLocales {
   enUS = 'en-US'
 }
 
-export class IntlService {
-  static get AvailableLocales () {
-    return AvailableLocales
-  }
+export const IntlService = {
+  AvailableLocales,
 
-  static get availableLocalesContract (): Contract<AvailableLocales> {
+  availableLocalesContract (): Contract<AvailableLocales> {
     return union(...Object.values(IntlService.AvailableLocales))
-  }
+  },
 
-  static async loadDictionaries (locale: AvailableLocales) {
+  async loadDictionaries (locale: AvailableLocales) {
     const { data } = await selfApi.get<IDictionary<string>>(`locales/${locale}.json`)
     return data
   }

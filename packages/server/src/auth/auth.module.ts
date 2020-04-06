@@ -11,7 +11,6 @@ import { LocalStrategy } from './local.strategy'
   controllers: [AuthController],
   imports: [
     UsersModule,
-    ConfigModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
