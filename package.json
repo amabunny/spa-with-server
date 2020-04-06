@@ -7,9 +7,14 @@
   "scripts": {
     "dev": "concurrently --kill-others 'yarn dev-client' 'yarn dev-server'",
     "dev-server": "yarn --cwd ./packages/server start:dev",
-    "dev-client": "yarn --cwd ./packages/client start"
+    "dev-client": "yarn --cwd ./packages/client start",
+    "share-server-types": "node ./scripts/share-server-types.js"
   },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "devDependencies": {
+    "@types/recursive-readdir": "^2.2.0",
+    "recursive-readdir": "^2.2.2"
+  }
 }

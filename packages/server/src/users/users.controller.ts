@@ -1,6 +1,8 @@
 import { Controller, Get, Post, BadRequestException, Param, UseGuards, Request } from '@nestjs/common'
 import { JwtAuthGuard } from '@app/auth/jwt-auth.guard'
+import { JwtUserPayload } from '@app/auth/types'
 import { UsersService } from './users.service'
+import { NestRequest } from '@app/types/http'
 
 @Controller('users')
 export class UsersController {
@@ -15,8 +17,8 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  getUser (@Request() req) {
-    return req.user
+  getProfile (@Request() req: NestRequest<JwtUserPayload>) {
+    return this.usersService.usersRepository.findOne(req.user.sub)
   }
 
   @Post('delete/:id')

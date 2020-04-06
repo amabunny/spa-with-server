@@ -9,7 +9,7 @@ export const createAxiosInterceptors = () => {
       ...config,
       headers: {
         ...config.headers,
-        Authorization
+        Authorization: Authorization ? `Bearer ${Authorization}` : undefined
       }
     }
   }
