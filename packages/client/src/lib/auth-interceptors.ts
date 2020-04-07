@@ -1,12 +1,19 @@
 import axios, { AxiosRequestConfig, AxiosError } from 'axios'
 import { AuthService, ILoginTokenResult } from '@app/services/auth'
-import { LocalStorageService } from '@app/services/local-storage'
 
 interface ICreateInterceptorsParams {
-  onRefreshError: () => void
+  getAccessToken: () => string | null
+  getRefreshToken: () => string | null
+  onRefreshTokenError: () => void
+  onRefreshTokenSuccess: (params: { accessToken: string, refreshToken: string }) => void
 }
 
-export const createAxiosInterceptors = ({ onRefreshError }: ICreateInterceptorsParams) => {
+export const createAxiosInterceptors = ({
+  getAccessToken,
+  getRefreshToken,
+  onRefreshTokenError,
+  onRefreshTokenSuccess
+}: ICreateInterceptorsParams) => {
   let refreshingPromise: Promise<ILoginTokenResult> | null = null
 
   const requestInterceptor = async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => {
@@ -14,7 +21,7 @@ export const createAxiosInterceptors = ({ onRefreshError }: ICreateInterceptorsP
       await refreshingPromise
     }
 
-    const accessTokenLs = LocalStorageService.getAccessToken()
+    const accessTokenLs = getAccessToken()
 
     return {
       ...config,
@@ -26,15 +33,14 @@ export const createAxiosInterceptors = ({ onRefreshError }: ICreateInterceptorsP
   }
 
   const errorResponseInterceptor = async (error: AxiosError) => {
-    const refreshTokenLs = LocalStorageService.getRefreshToken()
+    const refreshTokenLs = getRefreshToken()
 
     if (error?.response?.status === 401 && refreshTokenLs) {
       try {
-        refreshingPromise = AuthService.revokeToken({ refreshToken: refreshTokenLs })
+        refreshingPromise = AuthService.refreshToken({ refreshToken: refreshTokenLs })
         const { refreshToken, accessToken } = await refreshingPromise
 
-        LocalStorageService.setAccessToken(accessToken)
-        LocalStorageService.setRefreshToken(refreshToken)
+        onRefreshTokenSuccess({ refreshToken, accessToken })
 
         refreshingPromise = null
 
@@ -46,12 +52,9 @@ export const createAxiosInterceptors = ({ onRefreshError }: ICreateInterceptorsP
           }
         })
       } catch (e) {
-        LocalStorageService.setAccessToken(null)
-        LocalStorageService.setRefreshToken(null)
-
         refreshingPromise = null
 
-        onRefreshError()
+        onRefreshTokenError()
         return Promise.reject(e)
       }
     }

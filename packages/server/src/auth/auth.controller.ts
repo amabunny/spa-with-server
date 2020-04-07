@@ -13,7 +13,8 @@ import { AuthService } from './auth.service'
 import { LocalAuthGuard } from './local-auth.guard'
 import { NestRequest } from '@app/types/http'
 import { LoginDTO } from './dto/login'
-import { RevokeDTO } from './dto/revoke'
+import { LogoutDTO } from './dto/logout'
+import { RefreshDTO } from './dto/refresh'
 import { ClientIp } from './decorators/client-ip'
 import { LocalUserPayload } from './types'
 
@@ -48,22 +49,33 @@ export class AuthController {
     return this.authService.login(req.user, fingerprint, clientIp)
   }
 
-  @Post('revoke')
-  async revoke (
-    @Body() { refreshToken, fingerprint }: RevokeDTO,
+  @Post('refresh')
+  async refresh (
+    @Body() { refreshToken, fingerprint }: RefreshDTO,
     @ClientIp() clientIp: string
   ) {
-    const revokeResult = await this.authService.revokeAccessToken(fingerprint, refreshToken, clientIp)
+    const refreshResult = await this.authService.refreshAccessToken(fingerprint, refreshToken, clientIp)
 
-    if (revokeResult.type === 'success') {
-      const { accessToken, refreshToken } = revokeResult
+    if (refreshResult.type === 'success') {
+      const { accessToken, refreshToken } = refreshResult
 
       return {
         accessToken,
         refreshToken
       }
     } else {
-      throw new ForbiddenException(revokeResult.message)
+      throw new ForbiddenException(refreshResult.message)
+    }
+  }
+
+  @Post('logout')
+  async logout (
+    @Body() { refreshToken, fingerprint }: LogoutDTO
+  ) {
+    await this.authService.revokeRefreshToken(fingerprint, refreshToken)
+
+    return {
+      success: true
     }
   }
 }

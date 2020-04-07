@@ -1,4 +1,4 @@
-export class RevokeDTO {
+export class LogoutDTO {
   refreshToken: string
   fingerprint: string
 }

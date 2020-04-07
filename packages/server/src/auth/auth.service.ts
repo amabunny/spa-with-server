@@ -37,13 +37,12 @@ export class AuthService {
     }
   }
 
-  public async revokeAccessToken (fingerprint: string, refreshToken: string, ip: string) {
-    const oldSession = await this.sessionsRepository.findOne({ refreshToken }, {
+  public async refreshAccessToken (fingerprint: string, refreshToken: string, ip: string) {
+    const oldSession = await this.sessionsRepository.findOne({ refreshToken, fingerprint }, {
       relations: ['user']
     })
 
     if (!oldSession) throw new Error('Incorrect refresh token.')
-    if (oldSession.fingerprint !== fingerprint) throw new Error('Incorrect browser fingerprint.')
     if (!oldSession.user) throw new Error("Can't load user relation.")
 
     if (oldSession.expires < new Date().getTime()) {
@@ -67,6 +66,16 @@ export class AuthService {
       accessToken,
       refreshToken: newRefreshToken
     }
+  }
+
+  public async revokeRefreshToken (fingerprint: string, refreshToken: string) {
+    const revokingSession = await this.sessionsRepository.findOne({ fingerprint, refreshToken })
+
+    if (!revokingSession) {
+      throw new Error('Incorrect refresh token.')
+    }
+
+    await this.sessionsRepository.delete(revokingSession)
   }
 
   private async createNewSession (userId: number, fingerprint: string, ip: string) {
