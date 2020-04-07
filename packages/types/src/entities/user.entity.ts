@@ -1,4 +1,4 @@
-import { Session } from '@app/auth/session.entity';
+import { Session } from './session.entity';
 export  class User {
     id: number;
     firstName: string;

@@ -12,6 +12,7 @@ import { AuthService } from './auth.service'
 import { LocalAuthGuard } from './local-auth.guard'
 import { NestRequest } from '@app/types/http'
 import { LoginDTO } from './dto/login'
+import { RevokeDTO } from './dto/revoke'
 import { LocalUserPayload } from './types'
 
 @Controller('auth')
@@ -49,5 +50,9 @@ export class AuthController {
       fingerprint,
       clientIp
     )
+  }
+
+  async revoke () {
+
   }
 }
