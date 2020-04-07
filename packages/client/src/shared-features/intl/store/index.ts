@@ -1,5 +1,5 @@
-import * as intl from './intl'
+import * as Intl from './intl'
 
 export {
-  intl
+  Intl
 }

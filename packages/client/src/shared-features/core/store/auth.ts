@@ -1,8 +1,13 @@
-import { createStore, forward, merge } from 'effector'
+import { createStore, forward, merge, split } from 'effector'
 import { SafeUser } from '@app/types/entities'
 import { getUser, login, logout, setTokens, getTokens } from './auth.effects'
 import { resetUser, init } from './auth.events'
 import { ITokensStore } from './auth.types'
+
+const { tokenFound, tokenNotFound } = split(getTokens.doneData, {
+  tokenFound: ({ accessToken }) => accessToken !== null,
+  tokenNotFound: ({ accessToken }) => accessToken === null
+})
 
 const $user = createStore<SafeUser | null>(null)
 
@@ -11,10 +16,17 @@ $user
   .reset(resetUser)
 
 const $tokens = createStore<ITokensStore>({ accessToken: null, refreshToken: null })
+
 $tokens
   .on(setTokens.done, (state, { params }) => ({ ...state, ...params }))
   .on(getTokens.done, (_, { result }) => result)
   .reset(resetUser)
+
+const $initializing = createStore(true)
+
+$initializing
+  .on(tokenNotFound, () => false)
+  .on(getUser.done, () => false)
 
 forward({
   from: init,
@@ -27,10 +39,7 @@ forward({
 })
 
 forward({
-  from: merge([
-    login.done,
-    getTokens.doneData.filterMap(({ accessToken }) => accessToken || undefined)
-  ]),
+  from: merge([login.done, tokenFound]),
   to: getUser
 })
 
@@ -43,6 +52,7 @@ export {
   getUser,
   $user,
   $tokens,
+  $initializing,
   login,
   logout,
   resetUser,

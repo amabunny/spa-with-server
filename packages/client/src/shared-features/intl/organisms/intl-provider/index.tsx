@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { IntlProvider as ReactIntlProvider } from 'react-intl'
 import { useStore } from 'effector-react'
-import { IntlService } from '@app/services/intl'
-import { intl } from '../../store'
+import { Intl } from '../../store'
 
 interface IProps {
   fallback?: React.ReactNode
@@ -12,12 +11,8 @@ export const IntlProvider: React.FC<IProps> = ({
   children,
   fallback = null
 }) => {
-  const { data, loading } = useStore(intl.$intlData)
-  const locale = useStore(intl.$locale)
-
-  useEffect(() => {
-    intl.changeLocale(IntlService.AvailableLocales.enUS)
-  }, [])
+  const { data, loading } = useStore(Intl.$intlData)
+  const locale = useStore(Intl.$locale)
 
   if (loading || !locale) {
     return (

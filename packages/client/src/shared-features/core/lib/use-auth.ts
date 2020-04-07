@@ -1,5 +1,4 @@
 import { useCallback, useEffect } from 'react'
-import { navigate } from '@reach/router'
 import { Auth } from '@app/shared-features/core'
 import { createAxiosInterceptors } from '@app/lib/auth-interceptors'
 import { AuthInterceptorService } from '@app/services/auth'
@@ -11,7 +10,6 @@ export const useAuth = () => {
 
   const onRefreshTokenError = useCallback(() => {
     Auth.resetUser()
-    navigate('/login')
   }, [])
 
   useEffect(() => {
@@ -22,16 +20,12 @@ export const useAuth = () => {
       getRefreshToken: () => Auth.$tokens.getState().refreshToken
     })
 
-    const requestInterceptorsId = AuthInterceptorService.useRequestInterceptor(requestInterceptor)
-    const responseInterceptorsId = AuthInterceptorService.useErrorResponseInterceptor(errorResponseInterceptor)
+    const requestInterceptorId = AuthInterceptorService.useRequestInterceptor(requestInterceptor)
+    const responseInterceptorId = AuthInterceptorService.useErrorResponseInterceptor(errorResponseInterceptor)
 
     return () => {
-      AuthInterceptorService.ejectRequestInterceptor(requestInterceptorsId)
-      AuthInterceptorService.ejectErrorResponseInterceptor(responseInterceptorsId)
+      AuthInterceptorService.ejectRequestInterceptor(requestInterceptorId)
+      AuthInterceptorService.ejectErrorResponseInterceptor(responseInterceptorId)
     }
   }, [onRefreshTokenError, onRefreshTokenSuccess])
-
-  useEffect(() => {
-    Auth.init()
-  }, [])
 }

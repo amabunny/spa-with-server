@@ -10,6 +10,8 @@ export interface ILoginTokenResult {
 }
 
 export const AuthService = {
+  browserPrint: '',
+
   async getBrowserPrint () {
     const components = await fingerprint.getPromise()
     const values = components.map(({ value }) => value)
