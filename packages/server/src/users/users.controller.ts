@@ -29,7 +29,7 @@ export class UsersController {
   }
 
   @Post('delete/:id')
-  async delete (@Param('id') id: string) {
+  async delete (@Param('id') id: number) {
     try {
       const deletedUser = await this.usersService.deleteUser(id)
       return deletedUser

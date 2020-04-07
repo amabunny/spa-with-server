@@ -12,7 +12,7 @@ export class UsersService {
     return this.usersRepository.save(newUser)
   }
 
-  public async deleteUser (id: string) {
+  public async deleteUser (id: number) {
     const user = await this.usersRepository.findOne({ id })
 
     if (user) {

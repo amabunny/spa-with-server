@@ -21,6 +21,7 @@ module.exports = {
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
-    'no-useless-constructor': 'off'
+    'no-useless-constructor': 'off',
+    'indent': 'off'
   }
 }

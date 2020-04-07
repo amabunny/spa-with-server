@@ -5,7 +5,7 @@ import { Session } from '@app/auth/session.entity'
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
-  id: string
+  id: number
 
   @Column()
   firstName: string
@@ -23,7 +23,7 @@ export class User {
   password: string
 
   @OneToMany(() => Session, session => session.user)
-  sessions: Session[]
+  sessions?: Session[]
 
   @BeforeInsert()
   private hashUserPassword () {

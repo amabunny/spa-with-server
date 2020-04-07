@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne, Generated, Column, BeforeInsert } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, ManyToOne, Generated, Column, BeforeInsert, JoinColumn } from 'typeorm'
 import { User } from '@app/users/user.entity'
 
 @Entity()
@@ -7,8 +7,13 @@ export class Session {
   id: string
 
   @ManyToOne(() => User, user => user.sessions)
+  @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
   user: User
 
+  @Column()
+  userId: number
+
+  @Column()
   @Generated('uuid')
   refreshToken: string
 
