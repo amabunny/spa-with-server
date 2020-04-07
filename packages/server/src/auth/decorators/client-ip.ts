@@ -1,8 +1,7 @@
-import { createParamDecorator, ExecutionContext } from '@nestjs/common'
+import { createParamDecorator } from '@nestjs/common'
+import { Request } from 'express'
 
-export const ClientIp = createParamDecorator((data: unknown, ctx: ExecutionContext) => {
-  const req = ctx.switchToHttp().getRequest()
-
+export const ClientIp = createParamDecorator((data: unknown, req: Request) => {
   const xForwardedFor = Array.isArray(req.headers['x-forwarded-for'])
     ? req.headers['x-forwarded-for'].join(',')
     : req.headers['x-forwarded-for']

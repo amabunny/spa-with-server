@@ -4,7 +4,8 @@ import {
   Post,
   BadRequestException,
   UseGuards,
-  Request
+  Request,
+  ForbiddenException
 } from '@nestjs/common'
 import { UsersService } from '@app/users/users.service'
 import { NewUserDTO } from './dto/new-user'
@@ -52,6 +53,17 @@ export class AuthController {
     @Body() { refreshToken, fingerprint }: RevokeDTO,
     @ClientIp() clientIp: string
   ) {
-    return this.authService.revokeAccessToken(fingerprint, refreshToken, clientIp)
+    const revokeResult = await this.authService.revokeAccessToken(fingerprint, refreshToken, clientIp)
+
+    if (revokeResult.type === 'success') {
+      const { accessToken, refreshToken } = revokeResult
+
+      return {
+        accessToken,
+        refreshToken
+      }
+    } else {
+      throw new ForbiddenException(revokeResult.message)
+    }
   }
 }

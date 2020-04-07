@@ -38,10 +38,22 @@ export class AuthService {
   }
 
   public async revokeAccessToken (fingerprint: string, refreshToken: string, ip: string) {
-    const oldSession = await this.sessionsRepository.findOne({ refreshToken })
+    const oldSession = await this.sessionsRepository.findOne({ refreshToken }, {
+      relations: ['user']
+    })
 
     if (!oldSession) throw new Error('Incorrect refresh token.')
     if (oldSession.fingerprint !== fingerprint) throw new Error('Incorrect browser fingerprint.')
+    if (!oldSession.user) throw new Error("Can't load user relation.")
+
+    if (oldSession.expires < new Date().getTime()) {
+      this.sessionsRepository.delete(oldSession)
+
+      return {
+        type: 'error' as const,
+        message: 'Refresh token is expired'
+      }
+    }
 
     const { id: userId } = oldSession.user
 
@@ -51,6 +63,7 @@ export class AuthService {
     const { refreshToken: newRefreshToken } = await this.createNewSession(userId, fingerprint, ip)
 
     return {
+      type: 'success' as const,
       accessToken,
       refreshToken: newRefreshToken
     }

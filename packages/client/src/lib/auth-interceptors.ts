@@ -1,8 +1,12 @@
-import { AxiosRequestConfig, AxiosError } from 'axios'
+import axios, { AxiosRequestConfig, AxiosError } from 'axios'
 import { AuthService, ILoginTokenResult } from '@app/services/auth'
 import { LocalStorageService } from '@app/services/local-storage'
 
-export const createAxiosInterceptors = () => {
+interface ICreateInterceptorsParams {
+  onRefreshError: () => void
+}
+
+export const createAxiosInterceptors = ({ onRefreshError }: ICreateInterceptorsParams) => {
   let refreshingPromise: Promise<ILoginTokenResult> | null = null
 
   const requestInterceptor = async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => {
@@ -10,13 +14,13 @@ export const createAxiosInterceptors = () => {
       await refreshingPromise
     }
 
-    const Authorization = LocalStorageService.getAccessToken()
+    const accessTokenLs = LocalStorageService.getAccessToken()
 
     return {
       ...config,
       headers: {
         ...config.headers,
-        Authorization: Authorization ? `Bearer ${Authorization}` : undefined
+        Authorization: accessTokenLs ? `Bearer ${accessTokenLs}` : undefined
       }
     }
   }
@@ -24,21 +28,32 @@ export const createAxiosInterceptors = () => {
   const errorResponseInterceptor = async (error: AxiosError) => {
     const refreshTokenLs = LocalStorageService.getRefreshToken()
 
-    if (
-      error &&
-      error.response &&
-      error.response.status === 401 &&
-      refreshTokenLs
-    ) {
-      refreshingPromise = AuthService.revokeToken({ refreshToken: refreshTokenLs })
-      const { refreshToken, accessToken } = await refreshingPromise
+    if (error?.response?.status === 401 && refreshTokenLs) {
+      try {
+        refreshingPromise = AuthService.revokeToken({ refreshToken: refreshTokenLs })
+        const { refreshToken, accessToken } = await refreshingPromise
 
-      LocalStorageService.setAccessToken(accessToken)
-      LocalStorageService.setRefreshToken(refreshToken)
+        LocalStorageService.setAccessToken(accessToken)
+        LocalStorageService.setRefreshToken(refreshToken)
 
-      refreshingPromise = null
+        refreshingPromise = null
 
-      return error.config
+        return axios({
+          ...error.config,
+          headers: {
+            ...error.config.headers,
+            Authorization: `Bearer ${accessToken}`
+          }
+        })
+      } catch (e) {
+        LocalStorageService.setAccessToken(null)
+        LocalStorageService.setRefreshToken(null)
+
+        refreshingPromise = null
+
+        onRefreshError()
+        return Promise.reject(e)
+      }
     }
 
     return Promise.reject(error)

@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { hostApi } from '@app/api/host'
 import fingerprint from 'fingerprintjs2'
+import { EnvService } from './env'
 
 export interface ILoginTokenResult {
   accessToken: string
@@ -31,9 +32,9 @@ export const AuthService = {
   },
 
   async revokeToken ({ refreshToken } : { refreshToken: string }) {
-    const browserPrint = AuthService.getBrowserPrint()
+    const browserPrint = await AuthService.getBrowserPrint()
 
-    const { data } = await axios.post<ILoginTokenResult>('/auth/revoke', {
+    const { data } = await axios.post<ILoginTokenResult>(`${EnvService.getHostUrl()}/auth/revoke`, {
       refreshToken,
       fingerprint: browserPrint
     })

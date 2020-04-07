@@ -8,7 +8,7 @@ export class Session {
 
   @ManyToOne(() => User, user => user.sessions)
   @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
-  user: User
+  user?: User
 
   @Column()
   userId: number
