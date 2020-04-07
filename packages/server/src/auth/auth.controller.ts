@@ -10,6 +10,8 @@ import { UsersService } from '@app/users/users.service'
 import { NewUserDTO } from './dto/new-user'
 import { AuthService } from './auth.service'
 import { LocalAuthGuard } from './local-auth.guard'
+import { NestRequest } from '@app/types/http'
+import { LocalUserPayload } from './types'
 
 @Controller('auth')
 export class AuthController {
@@ -30,7 +32,7 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login (@Request() req) {
+  async login (@Request() req: NestRequest<LocalUserPayload>) {
     return this.authService.login(req.user)
   }
 }

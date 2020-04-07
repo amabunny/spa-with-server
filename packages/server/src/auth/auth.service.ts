@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
+import { ConfigService } from '@nestjs/config'
 import { UsersService } from '@app/users/users.service'
 import { User } from '@app/users/user.entity'
 import omit from 'lodash/omit'
@@ -9,7 +10,8 @@ import { Crypt } from './crypt'
 export class AuthService {
   constructor (
     private readonly usersService: UsersService,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService
   ) {}
 
   public async validateUser (username: string, password: string) {
@@ -22,12 +24,14 @@ export class AuthService {
     return null
   }
 
-  public async login (user: User) {
+  public async login (user: Omit<User, 'password'>) {
+    const tokenPayload = {
+      username: user.username,
+      sub: user.id
+    }
+
     return {
-      accessToken: this.jwtService.sign({
-        username: user.username,
-        sub: user.id
-      })
+      accessToken: this.jwtService.sign(tokenPayload)
     }
   }
 }

@@ -7,7 +7,7 @@ import { User } from './user.entity'
 export class UsersService {
   constructor (@InjectRepository(User) public readonly usersRepository: Repository<User>) {}
 
-  public async createUser (user: Omit<User, 'id' | 'hashUserPassword'>) {
+  public async createUser (user: Omit<User, 'id' | 'hashUserPassword' | 'sessions'>) {
     const newUser = Object.assign(new User(), user)
     return this.usersRepository.save(newUser)
   }

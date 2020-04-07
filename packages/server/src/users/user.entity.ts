@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, OneToMany } from 'typeorm'
 import { Crypt } from '@app/auth/crypt'
+import { Session } from '@app/auth/session.entity'
 
 @Entity()
 export class User {
@@ -20,6 +21,9 @@ export class User {
 
   @Column()
   password: string
+
+  @OneToMany(() => Session, session => session.user)
+  sessions: Session[]
 
   @BeforeInsert()
   private hashUserPassword () {

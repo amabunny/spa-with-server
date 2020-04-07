@@ -5,7 +5,11 @@ import { ColProps } from 'antd/lib/grid/col'
 import { Auth } from '@app/shared-features/core'
 import classes from './style.module.less'
 
-export const LoginForm = () => {
+interface IProps {
+  onLoginSuccess?: () => void
+}
+
+export const LoginForm: React.FC<IProps> = ({ onLoginSuccess }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [isAuthorizing, setIsAuthorizing] = useState(false)
@@ -24,12 +28,16 @@ export const LoginForm = () => {
 
     try {
       await Auth.login({ username, password })
+
+      if (onLoginSuccess) {
+        onLoginSuccess()
+      }
     } catch {
       alert('Error till login')
     } finally {
       setIsAuthorizing(false)
     }
-  }, [username, password])
+  }, [username, password, onLoginSuccess])
 
   const labelLayout = useMemo<ColProps>(() => ({
     xs: { span: 24 },
