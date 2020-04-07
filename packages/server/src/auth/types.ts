@@ -1,8 +1,8 @@
-import { User } from "@app/users/user.entity"
+import { User } from '@app/users/user.entity'
 
 export interface JwtUserPayload {
   sub: string
   username: string
 }
 
-export type LocalUserPayload = Omit<User, 'password'>
+export type LocalUserPayload = User

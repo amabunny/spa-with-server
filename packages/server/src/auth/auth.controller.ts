@@ -13,6 +13,7 @@ import { LocalAuthGuard } from './local-auth.guard'
 import { NestRequest } from '@app/types/http'
 import { LoginDTO } from './dto/login'
 import { RevokeDTO } from './dto/revoke'
+import { ClientIp } from './decorators/client-ip'
 import { LocalUserPayload } from './types'
 
 @Controller('auth')
@@ -34,25 +35,23 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login (@Request() req: NestRequest<LocalUserPayload>, @Body() { fingerprint }: LoginDTO) {
-    const xForwardedFor = Array.isArray(req.headers['x-forwarded-for'])
-      ? req.headers['x-forwarded-for'].join(',')
-      : req.headers['x-forwarded-for']
-
-    const clientIp = xForwardedFor || req.connection.remoteAddress
-
+  async login (
+    @Request() req: NestRequest<LocalUserPayload>,
+    @Body() { fingerprint }: LoginDTO,
+    @ClientIp() clientIp: string
+  ) {
     if (!clientIp) {
       throw new BadRequestException()
     }
 
-    return this.authService.login(
-      req.user,
-      fingerprint,
-      clientIp
-    )
+    return this.authService.login(req.user, fingerprint, clientIp)
   }
 
-  async revoke () {
-
+  @Post('revoke')
+  async revoke (
+    @Body() { refreshToken, fingerprint }: RevokeDTO,
+    @ClientIp() clientIp: string
+  ) {
+    return this.authService.revokeAccessToken(fingerprint, refreshToken, clientIp)
   }
 }

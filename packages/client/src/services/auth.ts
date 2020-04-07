@@ -1,13 +1,23 @@
+import axios from 'axios'
 import { hostApi } from '@app/api/host'
 import fingerprint from 'fingerprintjs2'
 
+export interface ILoginTokenResult {
+  accessToken: string
+  refreshToken: string
+}
+
 export const AuthService = {
-  async login ({ password, username }: { username: string, password: string }) {
+  async getBrowserPrint () {
     const components = await fingerprint.getPromise()
     const values = components.map(({ value }) => value)
-    const browserPrint = fingerprint.x64hash128(values.join(), 31)
+    return fingerprint.x64hash128(values.join(), 31)
+  },
 
-    const { data } = await hostApi.post<{ accessToken: string }>('auth/login', {
+  async login ({ password, username }: { username: string, password: string }) {
+    const browserPrint = await AuthService.getBrowserPrint()
+
+    const { data } = await hostApi.post<ILoginTokenResult>('auth/login', {
       username,
       password,
       fingerprint: browserPrint
@@ -18,5 +28,16 @@ export const AuthService = {
 
   async logout () {
 
+  },
+
+  async revokeToken ({ refreshToken } : { refreshToken: string }) {
+    const browserPrint = AuthService.getBrowserPrint()
+
+    const { data } = await axios.post<ILoginTokenResult>('/auth/revoke', {
+      refreshToken,
+      fingerprint: browserPrint
+    })
+
+    return data
   }
 }

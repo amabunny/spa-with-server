@@ -2,8 +2,8 @@ import { Controller, Get, Post, BadRequestException, Param, UseGuards, Request }
 import omit from 'lodash/omit'
 import { JwtAuthGuard } from '@app/auth/jwt-auth.guard'
 import { JwtUserPayload } from '@app/auth/types'
-import { UsersService } from './users.service'
 import { NestRequest } from '@app/types/http'
+import { UsersService } from './users.service'
 
 @Controller('users')
 export class UsersController {

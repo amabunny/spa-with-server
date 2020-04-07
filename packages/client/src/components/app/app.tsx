@@ -8,9 +8,15 @@ import { Router } from '../router'
 
 const AppView = () => {
   useEffect(() => {
-    const { requestInterceptor } = createAxiosInterceptors()
+    const { requestInterceptor, errorResponseInterceptor } = createAxiosInterceptors()
 
-    hostApi.interceptors.request.use(requestInterceptor)
+    const requestInterceptorsId = hostApi.interceptors.request.use(requestInterceptor)
+    const responseInterceptorsId = hostApi.interceptors.response.use(undefined, errorResponseInterceptor)
+
+    return () => {
+      hostApi.interceptors.request.eject(requestInterceptorsId)
+      hostApi.interceptors.response.eject(responseInterceptorsId)
+    }
   }, [])
 
   useEffect(() => {

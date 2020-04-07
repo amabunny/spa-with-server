@@ -6,7 +6,6 @@ import { Repository } from 'typeorm'
 import { UsersService } from '@app/users/users.service'
 import { User } from '@app/users/user.entity'
 import { Session } from './session.entity'
-import omit from 'lodash/omit'
 import { Crypt } from './crypt'
 
 @Injectable()
@@ -22,30 +21,56 @@ export class AuthService {
     const user = await this.usersService.usersRepository.findOne({ username })
 
     if (user && Crypt.comparePasswords(password, user.password)) {
-      return omit(user, ['password'])
+      return user
     }
 
     return null
   }
 
-  public async login (user: Omit<User, 'password'>, fingerprint: string, ip: string) {
-    const tokenPayload = {
-      username: user.username,
-      sub: user.id
-    }
+  public async login (user: User, fingerprint: string, ip: string) {
+    const accessToken = this.signNewToken(user)
+    const { refreshToken } = await this.createNewSession(user.id, fingerprint, ip)
 
+    return {
+      accessToken,
+      refreshToken
+    }
+  }
+
+  public async revokeAccessToken (fingerprint: string, refreshToken: string, ip: string) {
+    const oldSession = await this.sessionsRepository.findOne({ refreshToken })
+
+    if (!oldSession) throw new Error('Incorrect refresh token.')
+    if (oldSession.fingerprint !== fingerprint) throw new Error('Incorrect browser fingerprint.')
+
+    const { id: userId } = oldSession.user
+
+    this.sessionsRepository.delete(oldSession)
+
+    const accessToken = this.signNewToken(oldSession.user)
+    const { refreshToken: newRefreshToken } = await this.createNewSession(userId, fingerprint, ip)
+
+    return {
+      accessToken,
+      refreshToken: newRefreshToken
+    }
+  }
+
+  private async createNewSession (userId: number, fingerprint: string, ip: string) {
     const session = new Session()
 
     session.expires = new Date().getTime() + this.configService.get('JWT_REFRESH_TOKEN_ALIVE_SECONDS') * 1000
-    session.userId = user.id
+    session.userId = userId
     session.fingerprint = fingerprint
     session.ip = ip
 
-    const { refreshToken } = await this.sessionsRepository.save(session)
+    return this.sessionsRepository.save(session)
+  }
 
-    return {
-      accessToken: this.jwtService.sign(tokenPayload),
-      refreshToken
-    }
+  private signNewToken (user: User) {
+    return this.jwtService.sign({
+      username: user.username,
+      sub: user.id
+    })
   }
 }

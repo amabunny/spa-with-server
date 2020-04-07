@@ -8,11 +8,13 @@ $user.on(getUser.done, (_, { result }) => result)
 
 login.done.watch(({ result }) => {
   LocalStorageService.setAccessToken(result.accessToken)
+  LocalStorageService.setRefreshToken(result.refreshToken)
   getUser()
 })
 
 logout.done.watch(() => {
   LocalStorageService.setAccessToken(null)
+  LocalStorageService.setRefreshToken(null)
 })
 
 export {
