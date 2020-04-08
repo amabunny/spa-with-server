@@ -1,7 +1,7 @@
 import { User } from './user.entity';
 export  class Session {
     id: string;
-    user: User;
+    user?: User;
     userId: number;
     refreshToken: string;
     fingerprint: string;
