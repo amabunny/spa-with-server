@@ -3,6 +3,7 @@
 	"auth.loginForm.password": "Password",
 	"auth.loginForm.submit": "Sign-in",
 	"auth.loginForm.username": "User name",
+	"auth.logout": "Logout",
 	"auth.register": "Sign-up",
 	"auth.registerForm.confirmPassword": "Confirm password",
 	"auth.registerForm.firstName": "First  name",
@@ -11,5 +12,7 @@
 	"auth.registerForm.submit": "Register now",
 	"auth.registerForm.tgContact": "Telegram profile link",
 	"auth.registerForm.username": "User name",
-	"blogArticles.title": "{nickname} blog"
+	"blogArticles.title": "{nickname} blog",
+	"menu.adminPanel": "Admin",
+	"menu.goHome": "Go home"
 }

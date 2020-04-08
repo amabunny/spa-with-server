@@ -14,6 +14,7 @@ const $user = createStore<SafeUser | null>(null)
 $user
   .on(getUser.done, (_, { result }) => result)
   .reset(resetUser)
+  .reset(logout)
 
 const $tokens = createStore<ITokensStore>({ accessToken: null, refreshToken: null })
 
@@ -44,7 +45,7 @@ forward({
 })
 
 forward({
-  from: [logout, resetUser],
+  from: merge([logout.done, resetUser]),
   to: setTokens.prepend(() => ({ accessToken: null, refreshToken: null }))
 })
 

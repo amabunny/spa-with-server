@@ -4,11 +4,14 @@ import { BaseTemplate } from '@app/ui'
 import { useRouteScope } from '@app/shared-features/core'
 
 export const AdminPage: React.FC<RouteComponentProps> = () => {
-  useRouteScope({ scope: 'private' })
+  const { guardedRedirect } = useRouteScope({ scope: 'private' })
 
   return (
-    <BaseTemplate>
-      admin page
-    </BaseTemplate>
+    <>
+      {guardedRedirect}
+      <BaseTemplate>
+        admin page
+      </BaseTemplate>
+    </>
   )
 }

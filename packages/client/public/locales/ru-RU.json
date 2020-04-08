@@ -3,6 +3,7 @@
 	"auth.loginForm.password": "Пароль",
 	"auth.loginForm.submit": "Вход",
 	"auth.loginForm.username": "Имя пользователя",
+	"auth.logout": "Выход",
 	"auth.register": "Регистрация",
 	"auth.registerForm.confirmPassword": "Повторите пароль",
 	"auth.registerForm.firstName": "Имя",
@@ -11,5 +12,7 @@
 	"auth.registerForm.submit": "Зарегистрироваться",
 	"auth.registerForm.tgContact": "Telegram-профиль",
 	"auth.registerForm.username": "Имя пользователя",
-	"blogArticles.title": "{nickname} блог"
+	"blogArticles.title": "{nickname} блог",
+	"menu.adminPanel": "Администрирование",
+	"menu.goHome": "На главную"
 }

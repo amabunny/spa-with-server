@@ -1,8 +1,8 @@
 import React from 'react'
-import { Header } from '../../molecules/header'
+import { Header } from '../../organisms/header'
 import { Container } from '../../atoms/container'
-import classes from './style.module.less'
 import '@app/styles/reset.less'
+import classes from './style.module.less'
 
 export const BaseTemplate: React.FC = ({ children }) => {
   return (
