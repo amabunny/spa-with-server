@@ -27,7 +27,8 @@ const $initializing = createStore(true)
 
 $initializing
   .on(tokenNotFound, () => false)
-  .on(getUser.done, () => false)
+  .on(login.finally, () => false)
+  .on(getUser.finally, () => false)
 
 forward({
   from: init,
