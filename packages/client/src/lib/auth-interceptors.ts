@@ -17,31 +17,33 @@ export const createAxiosInterceptors = ({
   let refreshingPromise: Promise<ILoginTokenResult> | null = null
 
   const requestInterceptor = async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => {
-    if (refreshingPromise) {
-      await refreshingPromise
-    }
+    let takenAccessToken = null
 
-    const accessTokenLs = getAccessToken()
+    if (refreshingPromise) {
+      const { accessToken } = await refreshingPromise
+      takenAccessToken = accessToken
+    } else {
+      takenAccessToken = getAccessToken()
+    }
 
     return {
       ...config,
       headers: {
         ...config.headers,
-        Authorization: accessTokenLs ? `Bearer ${accessTokenLs}` : undefined
+        Authorization: takenAccessToken ? `Bearer ${takenAccessToken}` : undefined
       }
     }
   }
 
   const errorResponseInterceptor = async (error: AxiosError) => {
-    const refreshTokenLs = getRefreshToken()
+    const takenRefreshToken = getRefreshToken()
 
-    if (error?.response?.status === 401 && refreshTokenLs) {
+    if (error?.response?.status === 401 && takenRefreshToken) {
       try {
-        refreshingPromise = AuthService.refreshToken({ refreshToken: refreshTokenLs })
+        refreshingPromise = AuthService.refreshToken({ refreshToken: takenRefreshToken })
         const { refreshToken, accessToken } = await refreshingPromise
 
         onRefreshTokenSuccess({ refreshToken, accessToken })
-
         refreshingPromise = null
 
         return axios({
