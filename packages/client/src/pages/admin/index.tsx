@@ -1,6 +1,6 @@
 import React from 'react'
 import { RouteComponentProps } from '@reach/router'
-import { BaseTemplate } from '@app/ui'
+import { AdminTemplate } from '@app/ui'
 import { useRouteScope } from '@app/shared-features/core'
 
 export const AdminPage: React.FC<RouteComponentProps> = () => {
@@ -9,9 +9,9 @@ export const AdminPage: React.FC<RouteComponentProps> = () => {
   return (
     <>
       {guardedRedirect}
-      <BaseTemplate>
+      <AdminTemplate>
         admin page
-      </BaseTemplate>
+      </AdminTemplate>
     </>
   )
 }

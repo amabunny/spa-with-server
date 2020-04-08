@@ -16,6 +16,28 @@
         <name></name>
         <children>
             <folder_node>
+                <name>articles</name>
+                <children>
+                    <concept_node>
+                        <name>entity</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description></description>
+                        <comment></comment>
+                        <default_text></default_text>
+                        <translations>
+                            <translation>
+                                <language>en-US</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>ru-RU</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                </children>
+            </folder_node>
+            <folder_node>
                 <name>auth</name>
                 <children>
                     <concept_node>
@@ -252,28 +274,6 @@
                 </children>
             </folder_node>
             <folder_node>
-                <name>blogArticles</name>
-                <children>
-                    <concept_node>
-                        <name>title</name>
-                        <definition_loaded>false</definition_loaded>
-                        <description></description>
-                        <comment></comment>
-                        <default_text></default_text>
-                        <translations>
-                            <translation>
-                                <language>en-US</language>
-                                <approved>false</approved>
-                            </translation>
-                            <translation>
-                                <language>ru-RU</language>
-                                <approved>false</approved>
-                            </translation>
-                        </translations>
-                    </concept_node>
-                </children>
-            </folder_node>
-            <folder_node>
                 <name>menu</name>
                 <children>
                     <concept_node>
@@ -295,6 +295,45 @@
                     </concept_node>
                     <concept_node>
                         <name>goHome</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description></description>
+                        <comment></comment>
+                        <default_text></default_text>
+                        <translations>
+                            <translation>
+                                <language>en-US</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>ru-RU</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                </children>
+            </folder_node>
+            <folder_node>
+                <name>sections</name>
+                <children>
+                    <concept_node>
+                        <name>admin</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description></description>
+                        <comment></comment>
+                        <default_text></default_text>
+                        <translations>
+                            <translation>
+                                <language>en-US</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>ru-RU</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
+                        <name>index</name>
                         <definition_loaded>false</definition_loaded>
                         <description></description>
                         <comment></comment>

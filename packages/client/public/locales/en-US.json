@@ -1,4 +1,5 @@
 {
+	"articles.entity": "Articles",
 	"auth.login": "Sign-in",
 	"auth.loginForm.password": "Password",
 	"auth.loginForm.submit": "Sign-in",
@@ -12,7 +13,8 @@
 	"auth.registerForm.submit": "Register now",
 	"auth.registerForm.tgContact": "Telegram profile link",
 	"auth.registerForm.username": "User name",
-	"blogArticles.title": "{nickname} blog",
 	"menu.adminPanel": "Admin",
-	"menu.goHome": "Go home"
+	"menu.goHome": "Go home",
+	"sections.admin": "Admin",
+	"sections.index": "{nickname} blog"
 }
