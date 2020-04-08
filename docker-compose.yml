@@ -5,8 +5,10 @@ volumes:
 
 services:
   db:
+    build:
+      context: .
+      dockerfile: Dockerfile.postgres
     container_name: "postgres_container"
-    image: "postgres:12-alpine"
     ports:
       - "54321:5432"
     volumes:
