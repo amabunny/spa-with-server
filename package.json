@@ -8,7 +8,9 @@
     "dev": "concurrently --kill-others 'yarn dev-client' 'yarn dev-server'",
     "dev-server": "yarn --cwd ./packages/server start:dev",
     "dev-client": "yarn --cwd ./packages/client start",
-    "share-server-types": "node ./scripts/share-server-types.js"
+    "share-server-types": "node ./scripts/share-server-types.js",
+    "migrate":  "yarn --cwd ./packages/server typeorm migration:run",
+    "seed": "yarn --cwd ./packages/server typeorm:seed"
   },
   "workspaces": [
     "packages/*"
